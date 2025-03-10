@@ -20,11 +20,12 @@ const Messages = () => {
   },[messages])
   return (
     <>
-        {loading?(<Loading></Loading>):(messageList.length>0 && messageList.map((message)=>{
+        {loading?(<Loading></Loading>):(messageList.length>0 && messageList.map((message)=>(
           <div key={message._id} ref={lastMessageRef}>  
             <Message message={message}/>
           </div>
-        }))}
+        )
+        ))}
          <div className='' style={{minHeight:"calc(88vh - 8vh)"}}>
           {!loading && messageList.length === 0 && <div ><p className='font-bold mt-[50%] text-center'>Say Hi</p></div>}
       </div>

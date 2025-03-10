@@ -11,7 +11,7 @@ export default function Right() {
     return ()=> setSelectedConversation(null);
   },[]);
   return (
-    <div className='bg-slate-800 text-white w-full h-screen'>
+    <div className='bg-slate-800 text-white w-full md:w-[70%] h-screen'>
     <div>
       {!selectedConversation ? (<Nochat></Nochat>):(
         <>

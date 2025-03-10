@@ -1,44 +1,46 @@
-import React from 'react'
-import Right from './Right/Right'
-import Left from './Left/Left'
-import Logout from './Left/Logout'
+import React, { useState, useEffect } from "react";
+import Right from "./Right/Right";
+import Left from "./Left/Left";
+import Logout from "./Left/Logout";
+import useConversation from "../statemanage/useConversation";
 
 const Home = () => {
+  const { selectedConversation } = useConversation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Handle screen resize to update isMobile
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <div className="flex">
-      {/* Sidebar Drawer */}
-      <div className="drawer">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-        
-        <div className="drawer-content">
-          {/* Drawer Button */}
-          <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
-            Open drawer
-          </label>
-          
-          {/* Main Content */}
-          <div className="flex">
-            <Left /> {/* Left Component - Sidebar items */}
-            <Right /> {/* Right Component - Main content */}
-          </div>
+    <div className="flex h-screen">
+      {/* Mobile View: Show Left Sidebar only if no conversation is selected */}
+      {isMobile && !selectedConversation && (
+        <div className="w-full flex flex-col">
+          <Left />
         </div>
+      )}
 
-        {/* Drawer Sidebar */}
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-            <li><a>Sidebar Item 1</a></li>
-            <li><a>Sidebar Item 2</a></li>
-            <li><Logout /> {/* Logout Component */}</li>
-          </ul>
+      {/* Mobile View: Show Right (Chat) when a conversation is selected */}
+      {isMobile && selectedConversation && (
+        <div className="w-full">
+          <Right />
         </div>
-      </div>
+      )}
+
+      {/* Desktop View: Show everything normally */}
+      {!isMobile && (
+        <>
+          <Logout />
+          <Left />
+          <Right />
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

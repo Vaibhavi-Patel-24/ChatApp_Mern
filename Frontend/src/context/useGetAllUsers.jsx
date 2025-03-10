@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const useGetAllUsers = () => {
     const [allUsers,setAllUSers] = useState([]);
-    const [loading,setLoading] = useState([]);
+    const [loading,setLoading] = useState(false);
     useEffect(()=>{
         const getUsers = async()=>{
             setLoading(true)
@@ -16,12 +16,14 @@ const useGetAllUsers = () => {
                   Authorization:`Bearer ${token}`,
                 }
               })
-              setAllUSers(response.data.allUser);
-              setLoading(false);
+              setAllUSers(response.data.allUser || []);
             } 
             catch (error) {
-                console.log("Error"+error)
+              console.error("Error fetching users:", error.message);
             }
+            finally {
+              setLoading(false); 
+          }
         };
        getUsers() ;
     },[])
