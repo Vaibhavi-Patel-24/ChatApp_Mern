@@ -3,11 +3,20 @@ import User from '../models/user.model.js'
 
 const secureRoute = async(req,res,next)=>{
   try {
-    const token = req.cookies.jwt;
+    const token = req.cookies?.jwt;
     if(!token){
       return res.status(401).send("Not Authorized")
     }
-    const verified = jwt.verify(token, process.env.JWT_TOKEN);
+
+
+    let verified;
+    try {
+      verified = jwt.verify(token, process.env.JWT_TOKEN);
+    } catch (err) {
+      return res.status(403).json({ message: "Invalid or Expired Token" });
+    }
+
+
     if(!verified){
       return res.status(403).send("Invalid Token")
 

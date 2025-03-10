@@ -5,6 +5,9 @@ const useGetMessage = () => {
     const [loading,setLoading] = useState(false);
     const {messages,setMessages,selectedConversation} = useConversation();
     useEffect(()=>{
+        setMessages([]); 
+        if (!selectedConversation || !selectedConversation._id) return; 
+
         const getMessages = async () => {
             setLoading(true)
             if(selectedConversation && selectedConversation._id){
@@ -23,9 +26,8 @@ const useGetMessage = () => {
         }
         getMessages();
     },[selectedConversation,setMessages])
-  return (
-   {messages,loading}
-  )
+  return {messages,loading}
+  
 }
 
 export default useGetMessage
